@@ -1,14 +1,13 @@
+import os
+import random
 from statistics import mean, median, mode
 
-import random
-# Add text color support for Windows Command Prompt and PowerShell
-import os
-os.system("")
-
+# Constants
 START = 1
 STOP = 100
 
 # Colors
+os.system("")
 CG = "\033[0m\033[32m"
 CW = "\033[0m\033[37m"
 CR = "\033[0m\033[31m"
@@ -26,16 +25,9 @@ EM = "\033[3m"
 WIN = "\U0001F3C6"
 MEDAL = "\U0001F947"
 
-ERROR = f"""{CR}{EM}
-Not a valid guess. Please enter a whole number between {START} and {STOP}.{ST}
-""".strip()
-
-
 num = random.randint(START, STOP)
 
-print(
-    f"{CG}"
-    + r"""
+print(f"{CG}" + r"""
            ⢀⣤⣾⣿⣿⣿⣿⣿⣷⣤⡀
         ⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦
      ⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -56,9 +48,7 @@ print(
          ⠈⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁
              ⠉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉
                  ⠉⠛⠿⠿⠛⠉
-"""
-    + "\n"
-)
+""" + "\n")
 
 
 def start_game(num):
@@ -67,38 +57,50 @@ def start_game(num):
     tries = []
     while True:
         guesses += 1
+        guess = get_guess()
+        if guess < num:
+            print(f"{CV}It's higher")
+        elif guess > num:
+            print(f"{CC}It's lower")
+        else:
+            print(f"{CG}\n{WIN} You guessed it in {guesses} tries! {ST}{WIN}")
+            tries.append(guesses)
+            handle_stats(tries)
+            replay = input("Play again? (y/n) ")
+            if replay.lower() == "y":
+                if high_score == 0 or guesses < high_score:
+                    high_score = guesses
+                num = random.randint(START, STOP)
+                guesses = 0
+                print(f"\n{CY}HIGH SCORE: {BOLD}{high_score}{ST} {MEDAL}")
+            else:
+                print("\nThanks for playing!")
+                break
+
+
+def get_guess():
+    while True:
         try:
             guess = int(input(
                 f"{CW}Guess a whole number between {START} and {STOP}:{ST} "))
-        except ValueError:
-            print(ERROR)
-        else:
             if guess < START or guess > STOP:
-                print(ERROR)
-            elif guess < num:
-                print(f"{CV}Too low, try again.")
-            elif guess > num:
-                print(f"{CC}Too high, try again.")
+                print(handle_errors(guess))
             else:
-                print(
-                    f"{CG}\n{WIN} You guessed it in {guesses} tries! {ST}{WIN}"
-                )
-                tries.append(guesses)
-                print("\n\n₪₪₪ Overall Statistics ₪₪₪")
-                print(f"Mean: {CB}{BOLD}{mean(tries)}{ST}")
-                print(f"Median: {CV}{BOLD}{median(tries)}{ST}")
-                print(f"Mode: {CC}{BOLD}{mode(tries)}{ST}\n\n")
-                replay = input("Play again? (y/n) ")
-                if replay.lower() == "y":
-                    if high_score == 0 or guesses < high_score:
-                        high_score = guesses
-                    num = random.randint(START, STOP)
-                    guesses = 0
-                    print(f"\n{CY}HIGH SCORE: {BOLD}{high_score}{ST} {MEDAL}")
-                    continue
-                else:
-                    print("\nThanks for playing!")
-                    break
+                return guess
+        except ValueError as err:
+            print(handle_errors(err))
+
+
+def handle_errors(err):
+    err_msg = f"{CR}{EM}{err} is not a valid option. Please try again.{ST}"
+    return err_msg.replace("invalid literal for int() with base 10: ", "")
+
+
+def handle_stats(tries):
+    print("\n\n₪₪₪ Overall Statistics ₪₪₪")
+    print(f"Mean: {CB}{BOLD}{mean(tries):.2f}{ST}")
+    print(f"Median: {CV}{BOLD}{median(tries)}{ST}")
+    print(f"Mode: {CC}{BOLD}{mode(tries)}{ST}\n\n")
 
 
 start_game(num)
