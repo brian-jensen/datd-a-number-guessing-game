@@ -1,3 +1,5 @@
+from statistics import mean, median, mode
+
 import random
 # Add text color support for Windows Command Prompt and PowerShell
 import os
@@ -5,18 +7,41 @@ os.system("")
 
 START = 1
 STOP = 100
-ERROR = f"\033[31m\033[3mNot a valid guess. Please enter a whole number between {START} and {STOP}.\033[0m"
+
+# Colors
+CG = "\033[0m\033[32m"
+CW = "\033[0m\033[37m"
+CR = "\033[0m\033[31m"
+CB = "\033[0m\033[34m"
+CV = "\033[0m\033[35m"
+CC = "\033[0m\033[36m"
+CY = "\033[0m\033[33m"
+
+# Styles
+ST = "\033[0m"
+BOLD = "\033[1m"
+EM = "\033[3m"
+
+# Emojis
+WIN = "\U0001F3C6"
+MEDAL = "\U0001F947"
+
+
+ERROR = f"""{CR}{EM}
+Not a valid guess. Please enter a whole number between {START} and {STOP}.{ST}
+""".strip()
+
 
 num = random.randint(START, STOP)
 
 print(
-    "\033[32m"
+    f"{CG}"
     + r"""
-           ⢀⣤⣾⣿⣿⣿⣿⣿⣷⣤⡀               
-        ⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦                       
-     ⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿              
-   ⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿         ⣠⣤⣴⣦⣄        ____ _   _ _____ ____ ____   
- ⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟       ⣴⣿⣿⣿⣿⣿⣿⣿⣦    / ___| | | | ____/ ___/ ___/ 
+           ⢀⣤⣾⣿⣿⣿⣿⣿⣷⣤⡀
+        ⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦
+     ⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+   ⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿         ⣠⣤⣴⣦⣄        ____ _   _ _____ ____ ____
+ ⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟       ⣴⣿⣿⣿⣿⣿⣿⣿⣦    / ___| | | | ____/ ___/ ___/
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠁       ⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷  | |  _| | | |  _| \___ \___ \
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠛⠛⠛⠛⠛⠛⠉⠁        ⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿  | |_| | |_| | |___ ___) |__) |
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿                  ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿   \____|\___/|_____|____/____/
@@ -28,9 +53,9 @@ print(
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠉    ⣿⣿⣿⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿  |  \| | | | | |\/| |  _ \|  _| | |_) |
 ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋  | |\  | |_| | |  | | |_) | |___|  _ <
   ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀   ⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋    |_| \_|\___/|_|  |_|____/|_____|_| \_\
-     ⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁     
-         ⠈⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁         
-             ⠉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉             
+     ⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁
+         ⠈⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁
+             ⠉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠉
                  ⠉⠛⠿⠿⠛⠉
 """
     + "\n"
@@ -44,26 +69,27 @@ def start_game(num):
         guesses += 1
         try:
             guess = int(input(
-                f"\033[37m\033[40mGuess a whole number between {START} and {STOP}:\033[0m "))
+                f"{CW}Guess a whole number between {START} and {STOP}:{ST} "))
         except ValueError:
             print(ERROR)
         else:
             if guess < START or guess > STOP:
                 print(ERROR)
             elif guess < num:
-                print("\033[35mToo low, try again.")
+                print(f"{CV}Too low, try again.")
             elif guess > num:
-                print("\033[36mToo high, try again.")
+                print(f"{CC}Too high, try again.")
             else:
                 print(
-                    f"\033[32m\n\U0001F3C6 You guessed it in {guesses} tries!\033[0m \U0001F3C6")
+                    f"{CG}\n{WIN} You guessed it in {guesses} tries! {ST}{WIN}"
+                )
                 replay = input("Play again? (y/n) ")
                 if replay.lower() == "y":
                     if high_score == 0 or guesses < high_score:
                         high_score = guesses
                     num = random.randint(START, STOP)
                     guesses = 0
-                    print(f"\n\033[33mHIGH SCORE: {high_score} \U0001F947")
+                    print(f"\n{CY}HIGH SCORE: {BOLD}{high_score}{ST} {MEDAL}")
                     continue
                 else:
                     print("\nThanks for playing!")
