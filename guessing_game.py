@@ -26,7 +26,6 @@ EM = "\033[3m"
 WIN = "\U0001F3C6"
 MEDAL = "\U0001F947"
 
-
 ERROR = f"""{CR}{EM}
 Not a valid guess. Please enter a whole number between {START} and {STOP}.{ST}
 """.strip()
@@ -65,6 +64,7 @@ print(
 def start_game(num):
     guesses = 0
     high_score = 0
+    tries = []
     while True:
         guesses += 1
         try:
@@ -83,6 +83,11 @@ def start_game(num):
                 print(
                     f"{CG}\n{WIN} You guessed it in {guesses} tries! {ST}{WIN}"
                 )
+                tries.append(guesses)
+                print("\n\n₪₪₪ Overall Statistics ₪₪₪")
+                print(f"Mean: {CB}{BOLD}{mean(tries)}{ST}")
+                print(f"Median: {CV}{BOLD}{median(tries)}{ST}")
+                print(f"Mode: {CC}{BOLD}{mode(tries)}{ST}\n\n")
                 replay = input("Play again? (y/n) ")
                 if replay.lower() == "y":
                     if high_score == 0 or guesses < high_score:
