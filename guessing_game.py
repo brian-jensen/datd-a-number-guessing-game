@@ -25,7 +25,6 @@ EM = "\033[3m"
 WIN = "\U0001F3C6"
 MEDAL = "\U0001F947"
 
-num = random.randint(START, STOP)
 
 print(f"{CG}" + r"""
            ⢀⣤⣾⣿⣿⣿⣿⣿⣷⣤⡀
@@ -51,7 +50,8 @@ print(f"{CG}" + r"""
 """ + "\n")
 
 
-def start_game(num):
+def start_game():
+    num = random.randint(START, STOP)
     guesses = 0
     high_score = 0
     tries = []
@@ -103,4 +103,4 @@ def handle_stats(tries):
     print(f"Mode: {CC}{BOLD}{mode(tries)}{ST}\n\n")
 
 
-start_game(num)
+start_game()
