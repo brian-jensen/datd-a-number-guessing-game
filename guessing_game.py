@@ -68,8 +68,8 @@ def start_game():
             print(f"{CG}\n{WIN} You guessed it in {guesses} tries! {ST}{WIN}")
             tries.append(guesses)
             handle_stats(tries)
-            replay = input("Play again? (y/n) ")
-            if replay.lower() == "y":
+            replay = handle_replay()
+            if replay:
                 if high_score == 0 or guesses < high_score:
                     high_score = guesses
                 num = random.randint(START, STOP)
@@ -91,6 +91,17 @@ def get_guess():
                 return guess
         except ValueError as err:
             print(handle_errors(err))
+
+
+def handle_replay():
+    while True:
+        replay = input("Play again? (y/n) ")
+        if replay.lower() == "y":
+            return True
+        elif replay.lower() == "n":
+            return False
+        else:
+            print(handle_errors(replay))
 
 
 def handle_errors(err):
